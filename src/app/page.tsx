@@ -1,18 +1,24 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { HeroScene } from '@/components/hero-scene';
+import { Suspense } from 'react';
 
 export default function Home() {
   return (
     <div className="w-full">
       <section className="relative flex h-[70vh] w-full items-center justify-center text-center text-white">
-        <Image
-          src="https://placehold.co/1920x1080.png"
-          alt="Fine dining table setting"
-          data-ai-hint="fine dining restaurant"
-          fill
-          className="object-cover -z-10 brightness-50"
-        />
+        <div className="absolute inset-0 -z-10 bg-black">
+          <Suspense
+            fallback={
+              <div className="flex h-full w-full items-center justify-center bg-zinc-900 text-white">
+                Loading 3D model...
+              </div>
+            }
+          >
+            <HeroScene />
+          </Suspense>
+        </div>
         <div className="container px-4 md:px-6">
           <div className="mx-auto max-w-3xl space-y-4">
             <h1 className="font-headline text-4xl font-bold tracking-tighter md:text-6xl lg:text-7xl">
