@@ -8,6 +8,7 @@ import { CartSheet } from '@/components/cart-sheet';
 import { Button } from './ui/button';
 import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { Menu } from 'lucide-react';
+import { ThemeToggle } from './theme-toggle';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -43,6 +44,7 @@ export function Header() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
+          <ThemeToggle />
           <CartSheet />
           <div className="md:hidden">
             <Sheet>
