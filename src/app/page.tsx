@@ -58,10 +58,10 @@ export default function Home() {
         </div>
         <div className="container px-4 md:px-6">
           <div className="mx-auto max-w-3xl space-y-4 rounded-lg border border-border bg-background/20 p-8 backdrop-blur-sm">
-            <h1 className="font-headline text-4xl font-bold tracking-tighter text-foreground hero-text-shadow md:text-6xl lg:text-7xl">
+            <h1 className="font-headline text-4xl font-bold tracking-tighter text-foreground/90 hero-text-shadow md:text-6xl lg:text-7xl">
               Artistry in Every Bite.
             </h1>
-            <p className="text-lg text-foreground/90 hero-text-shadow md:text-xl">
+            <p className="text-lg text-foreground/80 hero-text-shadow md:text-xl">
              “Fresh. Fast. Finger-lickin’ good.”
             </p>
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
@@ -76,6 +76,36 @@ export default function Home() {
         </div>
       </section>
 
+
+
+      <section className="py-12 md:py-24 bg-muted/50">
+        <div className="container grid items-center gap-12 px-4 md:grid-cols-2 md:px-6">
+          <div>
+            <h2 className="mb-4 font-headline text-3xl font-bold md:text-4xl">
+              An Unforgettable Experience
+            </h2>
+            <p className="mb-6 text-muted-foreground">
+              At Gastronomic Gateway, we believe dining is more than just food;
+              it's a journey of the senses. Our chefs meticulously craft each
+              dish to perfection, using only the freshest, locally-sourced
+              ingredients.
+            </p>
+            <Button asChild className="btn-gradient">
+              <Link href="/testimonials">Read Our Stories</Link>
+            </Button>
+          </div>
+          <div className="relative h-80 w-full overflow-hidden rounded-lg shadow-xl">
+            <Image
+              src="https://placehold.co/600x400.png"
+              alt="Chef plating a dish"
+              data-ai-hint="chef plating food"
+              fill
+              className="object-cover"
+            />
+          </div>
+        </div>
+      </section>
+      
       <section className="py-12 md:py-24 bg-background">
         <div className="container px-4 md:px-6">
           <h2 className="mb-12 text-center font-headline text-4xl font-bold">
@@ -126,33 +156,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-12 md:py-24 bg-muted/50">
-        <div className="container grid items-center gap-12 px-4 md:grid-cols-2 md:px-6">
-          <div>
-            <h2 className="mb-4 font-headline text-3xl font-bold md:text-4xl">
-              An Unforgettable Experience
-            </h2>
-            <p className="mb-6 text-muted-foreground">
-              At Gastronomic Gateway, we believe dining is more than just food;
-              it's a journey of the senses. Our chefs meticulously craft each
-              dish to perfection, using only the freshest, locally-sourced
-              ingredients.
-            </p>
-            <Button asChild className="btn-gradient">
-              <Link href="/testimonials">Read Our Stories</Link>
-            </Button>
-          </div>
-          <div className="relative h-80 w-full overflow-hidden rounded-lg shadow-xl">
-            <Image
-              src="https://placehold.co/600x400.png"
-              alt="Chef plating a dish"
-              data-ai-hint="chef plating food"
-              fill
-              className="object-cover"
-            />
-          </div>
-        </div>
-      </section>
+      
     </div>
   );
 }
