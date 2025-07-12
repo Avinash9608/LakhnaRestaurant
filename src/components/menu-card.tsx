@@ -46,7 +46,7 @@ export function MenuCard({ item }: { item: MenuItem }) {
         </div>
       </CardContent>
       <CardFooter className="mt-auto flex items-center justify-between">
-        <p className="text-2xl font-bold text-primary">${item.price.toFixed(2)}</p>
+        <p className="text-2xl font-bold text-primary">₹{item.price.toFixed(2)}</p>
         <Button
           asChild
           className="btn-gradient"

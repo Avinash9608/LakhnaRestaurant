@@ -6,7 +6,7 @@ const menuItems: MenuItem[] = [
     id: '1',
     name: 'Emerald Risotto',
     description: 'Creamy Arborio rice with asparagus, peas, and a hint of mint.',
-    price: 18.0,
+    price: 350,
     image: 'https://placehold.co/400x400.png',
     dataAiHint: 'risotto food',
     ingredients: ['Arborio Rice', 'Asparagus', 'Peas', 'Parmesan', 'Mint'],
@@ -18,7 +18,7 @@ const menuItems: MenuItem[] = [
     name: 'Terracotta Bruschetta',
     description:
       'Toasted artisan bread with a medley of sun-dried tomatoes, olives, and capers.',
-    price: 14.0,
+    price: 250,
     image: 'https://placehold.co/400x400.png',
     dataAiHint: 'bruschetta food',
     ingredients: [
@@ -36,7 +36,7 @@ const menuItems: MenuItem[] = [
     name: 'Gateway Salmon',
     description:
       'Pan-seared salmon with a lemon-dill sauce, served with roasted root vegetables.',
-    price: 32.0,
+    price: 650,
     image: 'https://placehold.co/400x400.png',
     dataAiHint: 'salmon dish',
     ingredients: ['Salmon Fillet', 'Lemon', 'Dill', 'Carrots', 'Parsnips'],
@@ -48,7 +48,7 @@ const menuItems: MenuItem[] = [
     name: 'Forest Floor Steak',
     description:
       '8oz filet mignon with a wild mushroom reduction, paired with truffle mashed potatoes.',
-    price: 45.0,
+    price: 850,
     image: 'https://placehold.co/400x400.png',
     dataAiHint: 'steak dish',
     ingredients: [
@@ -66,7 +66,7 @@ const menuItems: MenuItem[] = [
     name: 'Beige Panna Cotta',
     description:
       'A delicate vanilla bean panna cotta with a seasonal fruit coulis.',
-    price: 12.0,
+    price: 220,
     image: 'https://placehold.co/400x400.png',
     dataAiHint: 'panna cotta',
     ingredients: ['Heavy Cream', 'Vanilla Bean', 'Sugar', 'Berries'],
@@ -78,7 +78,7 @@ const menuItems: MenuItem[] = [
     name: 'Molten Lava Cake',
     description:
       'Rich chocolate cake with a gooey center, served with raspberry sorbet.',
-    price: 15.0,
+    price: 280,
     image: 'https://placehold.co/400x400.png',
     dataAiHint: 'chocolate cake',
     ingredients: ['Dark Chocolate', 'Butter', 'Eggs', 'Flour', 'Raspberries'],

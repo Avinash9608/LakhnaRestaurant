@@ -22,7 +22,7 @@ const popularItems = [
     id: '1',
     name: 'Classic Beef Burger',
     description: '100% beef patty, lettuce, tomato, onion, and our secret sauce.',
-    price: 8.99,
+    price: 199,
     image: 'https://placehold.co/600x400.png',
     dataAiHint: 'beef burger',
     tags: ['Best Seller', 'Hot 🔥'],
@@ -31,7 +31,7 @@ const popularItems = [
     id: '2',
     name: 'Crispy Chicken Sandwich',
     description: 'Golden-fried chicken breast with pickles and mayo on a brioche bun.',
-    price: 7.99,
+    price: 179,
     image: 'https://placehold.co/600x400.png',
     dataAiHint: 'chicken sandwich',
     tags: ['New'],
@@ -40,7 +40,7 @@ const popularItems = [
     id: '3',
     name: 'Loaded Fries Supreme',
     description: 'Crispy fries topped with melted cheese, bacon, and sour cream.',
-    price: 6.49,
+    price: 149,
     image: 'https://placehold.co/600x400.png',
     dataAiHint: 'loaded fries',
     tags: [],
@@ -138,7 +138,7 @@ export default function Home() {
                   <CardDescription className="mt-2">{item.description}</CardDescription>
                 </CardContent>
                 <CardFooter className="flex items-center justify-between p-6 pt-0">
-                  <p className="text-3xl font-bold text-primary">${item.price.toFixed(2)}</p>
+                  <p className="text-3xl font-bold text-primary">₹{item.price.toFixed(2)}</p>
                   <Button asChild className="btn-gradient">
                     <Link href="#order-section">Order Now</Link>
                   </Button>
@@ -327,7 +327,7 @@ export default function Home() {
           <Card className="mt-12 overflow-hidden shadow-lg">
              <div className="w-full h-80">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3604.881474244243!2d85.0450554150141!3d25.37525288381401!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed57f594874c87%3A0x6b58c8f8cd83e58!2sLakhna%2C%20Bihar%20804453%2C%20India!5e0!3m2!1sen!2sus!4v1683050013978!5m2!1sen!2sus"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d57519.23194124933!2d79.0880128!3d26.4951606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39790b8f5223a31d%3A0x83b257da49303a42!2sLakhna%2C%20Bihar%20804453%2C%20India!5e0!3m2!1sen!2sus!4v1683050013978!5m2!1sen!2sus"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
