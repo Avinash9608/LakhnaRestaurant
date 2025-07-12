@@ -27,7 +27,7 @@ export default function Home() {
               Artistry in Every Bite.
             </h1>
             <p className="text-lg text-gray-200 md:text-xl">
-              Discover culinary excellence.
+              “Fresh. Fast. Finger-lickin’ good.”
             </p>
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <Button asChild size="lg" className="btn-gradient">
