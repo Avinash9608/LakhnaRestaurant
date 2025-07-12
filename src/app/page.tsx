@@ -4,12 +4,13 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { HeroScene } from '@/components/hero-scene';
 import { Suspense } from 'react';
+import { cn } from '@/lib/utils';
 
 export default function Home() {
   return (
     <div className="w-full">
-      <section className="relative flex h-[70vh] w-full items-center justify-center text-center text-white">
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-gray-900 via-gray-800 to-black">
+      <section className="relative flex h-[70vh] min-h-[500px] w-full items-center justify-center text-center">
+        <div className="absolute inset-0 -z-10 h-full w-full bg-slate-900/30">
           <Suspense
             fallback={
               <div className="flex h-full w-full items-center justify-center bg-zinc-900 text-white">
@@ -21,7 +22,7 @@ export default function Home() {
           </Suspense>
         </div>
         <div className="container px-4 md:px-6">
-          <div className="mx-auto max-w-3xl space-y-4">
+          <div className="mx-auto max-w-3xl space-y-4 rounded-lg bg-black/50 p-8 text-white backdrop-blur-sm">
             <h1 className="font-headline text-4xl font-bold tracking-tighter md:text-6xl lg:text-7xl">
               Artistry in Every Bite.
             </h1>
@@ -29,11 +30,7 @@ export default function Home() {
               Discover culinary excellence.
             </p>
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
-              <Button
-                asChild
-                size="lg"
-                className="bg-primary text-primary-foreground hover:bg-primary/90"
-              >
+              <Button asChild size="lg" className="btn-gradient">
                 <Link href="/menu">View Our Menu</Link>
               </Button>
               <Button asChild size="lg" variant="secondary">
@@ -44,7 +41,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-card py-12 md:py-24">
+      <section className="py-12 md:py-24">
         <div className="container grid items-center gap-12 px-4 md:grid-cols-2 md:px-6">
           <div>
             <h2 className="mb-4 font-headline text-3xl font-bold md:text-4xl">
@@ -56,10 +53,7 @@ export default function Home() {
               dish to perfection, using only the freshest, locally-sourced
               ingredients.
             </p>
-            <Button
-              asChild
-              className="bg-accent text-accent-foreground hover:bg-accent/90"
-            >
+            <Button asChild className="btn-gradient">
               <Link href="/testimonials">Read Our Stories</Link>
             </Button>
           </div>

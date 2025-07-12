@@ -4,11 +4,24 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { Header } from '@/components/header';
 import { CartProvider } from '@/context/cart-context';
+import { Lora, Open_Sans } from 'next/font/google';
 
 export const metadata: Metadata = {
   title: 'Gastronomic Gateway',
   description: 'An exquisite dining experience.',
 };
+
+const lora = Lora({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-lora',
+});
+
+const openSans = Open_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-open-sans',
+});
 
 export default function RootLayout({
   children,
@@ -17,19 +30,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Libertinus+Mono&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className={cn('min-h-screen bg-background font-body antialiased')}>
+      <body
+        className={cn(
+          'min-h-screen bg-background font-body antialiased',
+          lora.variable,
+          openSans.variable
+        )}
+      >
         <CartProvider>
           <div className="relative flex min-h-screen flex-col">
             <Header />

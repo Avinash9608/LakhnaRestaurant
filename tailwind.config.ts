@@ -1,4 +1,5 @@
 import type {Config} from 'tailwindcss';
+import { fontFamily } from 'tailwindcss/defaultTheme';
 
 export default {
   darkMode: ['class'],
@@ -17,12 +18,11 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['Lora', 'serif'],
-        headline: ['Lora', 'serif'],
-        code: ['"Libertinus Mono"', 'monospace'],
+        body: ['var(--font-open-sans)', ...fontFamily.sans],
+        headline: ['var(--font-lora)', ...fontFamily.serif],
       },
       colors: {
-        background: 'hsl(var(--background))',
+        background: 'hsl(var(--background-start-hsl))',
         foreground: 'hsl(var(--foreground))',
         card: {
           DEFAULT: 'hsl(var(--card))',

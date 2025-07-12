@@ -15,12 +15,13 @@ import { ShoppingBasket } from 'lucide-react';
 import { Button } from './ui/button';
 import { Menu3DScene } from './menu-3d-scene';
 import { Suspense } from 'react';
+import { cn } from '@/lib/utils';
 
 export function MenuCard({ item }: { item: MenuItem }) {
   const { addItem } = useCart();
 
   return (
-    <Card className="group flex h-full transform flex-col overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+    <Card className="group flex h-full transform flex-col overflow-hidden bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
       <CardHeader>
         <div className="relative mb-4 aspect-square w-full overflow-hidden rounded-md">
           <Suspense
@@ -49,7 +50,7 @@ export function MenuCard({ item }: { item: MenuItem }) {
         <p className="text-2xl font-bold text-primary">${item.price.toFixed(2)}</p>
         <Button
           onClick={() => addItem(item)}
-          className="bg-accent text-accent-foreground hover:bg-accent/90"
+          className="btn-gradient"
         >
           <ShoppingBasket className="mr-2 h-4 w-4" />
           Order Now

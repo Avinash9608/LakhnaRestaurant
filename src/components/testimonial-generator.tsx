@@ -13,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 export function TestimonialGenerator() {
   const { toast } = useToast();
@@ -85,12 +86,12 @@ export function TestimonialGenerator() {
             value={reviews}
             onChange={e => setReviews(e.target.value)}
             rows={10}
-            className="bg-card"
+            className="bg-card/80 backdrop-blur-sm"
           />
           <Button
             onClick={handleGenerate}
             disabled={isLoading}
-            className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+            className="w-full btn-gradient"
           >
             {isLoading ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -112,10 +113,7 @@ export function TestimonialGenerator() {
             <CardContent>
               <p className="italic">"{generatedSummary}"</p>
               <div className="mt-4 flex gap-4">
-                <Button
-                  onClick={handleApprove}
-                  className="bg-primary text-primary-foreground hover:bg-primary/90"
-                >
+                <Button onClick={handleApprove} className="btn-gradient">
                   <Check className="mr-2 h-4 w-4" /> Approve
                 </Button>
                 <Button onClick={handleReject} variant="destructive">
