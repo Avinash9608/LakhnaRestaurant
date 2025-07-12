@@ -83,7 +83,7 @@ export default function Home() {
           </h2>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {popularItems.map((item) => (
-              <Card key={item.id} className="group overflow-hidden rounded-xl border-border/50 shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 bg-card/80 backdrop-blur-sm">
+              <Card key={item.id} className="group overflow-hidden rounded-xl border shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 bg-card/80 backdrop-blur-sm">
                 <CardHeader className="p-0">
                   <div className="relative h-56 w-full">
                     <Image
