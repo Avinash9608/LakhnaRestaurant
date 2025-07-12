@@ -328,7 +328,7 @@ export default function Home() {
           <Card className="mt-12 overflow-hidden shadow-lg">
              <div className="w-full h-80">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d114580.82559553755!2d79.0880128!3d26.4951606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39790b8f5223a31d%3A0x83b257da49303a42!2sLakhna%2C%20Uttar%20Pradesh%20206127%2C%20India!5e0!3m2!1sen!2sus!4v1683050013978!5m2!1sen!2sus"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3604.881474244243!2d85.0450554150141!3d25.37525288381401!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39ed57f594874c87%3A0x6b58c8f8cd83e58!2sLakhna%2C%20Bihar%20804453%2C%20India!5e0!3m2!1sen!2sus!4v1683050013978!5m2!1sen!2sus"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -349,7 +349,7 @@ export default function Home() {
                   </Button>
                   <Button asChild size="lg" variant="secondary">
                      <a
-                        href="https://maps.google.com/?q=Lakhna"
+                        href="https://maps.google.com/?q=Lakhna,Bihar,804453"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
