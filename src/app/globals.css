@@ -4,26 +4,26 @@
 
 @layer base {
   :root {
-    --background-start-hsl: 40 56% 91%; /* Light Beige */
-    --background-end-hsl: 40 56% 96%; /* Lighter Beige */
+    --background-start-hsl: 255 60% 95%; /* Light Lavender */
+    --background-end-hsl: 255 60% 98%; /* Lighter Lavender */
     --foreground: 222.2 84% 4.9%;
-    --card: 40 56% 93%; /* Slightly darker beige for cards */
+    --card: 255 60% 93%; /* Slightly darker lavender for cards */
     --card-foreground: 222.2 84% 4.9%;
-    --popover: 40 56% 93%;
+    --popover: 255 60% 93%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 145 58% 54%; /* Emerald Green */
+    --primary: 270 50% 45%; /* Amethyst Purple */
     --primary-foreground: 210 40% 98%;
-    --secondary: 145 58% 90%;
-    --secondary-foreground: 145 58% 30%;
+    --secondary: 270 50% 90%;
+    --secondary-foreground: 270 50% 30%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 13 77% 65%; /* Terracotta */
-    --accent-foreground: 210 40% 98%;
+    --accent: 45 100% 51%; /* Gold */
+    --accent-foreground: 355.7 100% 97.3%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 145 58% 80%;
-    --input: 145 58% 85%;
-    --ring: 145 58% 54%;
+    --border: 270 50% 80%;
+    --input: 270 50% 85%;
+    --ring: 270 50% 45%;
     --radius: 0.5rem;
   }
   .dark {
@@ -34,19 +34,19 @@
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 145 58% 54%;
+    --primary: 270 50% 65%;
     --primary-foreground: 210 40% 98%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: 13 77% 65%;
+    --accent: 45 100% 61%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 145 58% 54%;
+    --ring: 270 50% 65%;
   }
 }
 
