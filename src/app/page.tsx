@@ -58,10 +58,10 @@ export default function Home() {
         </div>
         <div className="container px-4 md:px-6">
           <div className="mx-auto max-w-3xl space-y-4 rounded-lg border border-border bg-background/20 p-8 backdrop-blur-sm">
-            <h1 className="font-headline text-4xl font-bold tracking-tighter text-foreground/90 hero-text-shadow md:text-6xl lg:text-7xl">
+            <h1 className="font-headline text-4xl font-bold tracking-tighter text-zinc-800 hero-text-shadow dark:text-zinc-200 md:text-6xl lg:text-7xl">
               Artistry in Every Bite.
             </h1>
-            <p className="text-lg text-foreground/80 hero-text-shadow md:text-xl">
+            <p className="text-lg text-zinc-800/90 hero-text-shadow dark:text-zinc-200/90 md:text-xl">
              “Fresh. Fast. Finger-lickin’ good.”
             </p>
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
