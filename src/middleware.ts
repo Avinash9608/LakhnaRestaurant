@@ -2,9 +2,14 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 
-const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'your-fallback-secret');
+const JWT_SECRET = process.env.JWT_SECRET;
 
 export async function middleware(request: NextRequest) {
+  if (!JWT_SECRET) {
+    console.error('JWT_SECRET is not defined, redirecting to login.');
+    return NextResponse.redirect(new URL('/admin-login', request.url));
+  }
+  const secret = new TextEncoder().encode(JWT_SECRET);
   const sessionCookie = request.cookies.get('session');
 
   if (request.nextUrl.pathname.startsWith('/dashboard')) {
@@ -20,8 +25,10 @@ export async function middleware(request: NextRequest) {
       // Valid session, continue to the dashboard
       return NextResponse.next();
     } catch (err) {
-      // Invalid token, redirect to login
-      return NextResponse.redirect(new URL('/admin-login', request.url));
+      // Invalid token, clear the cookie and redirect to login
+      const response = NextResponse.redirect(new URL('/admin-login', request.url));
+      response.cookies.delete('session');
+      return response;
     }
   }
 

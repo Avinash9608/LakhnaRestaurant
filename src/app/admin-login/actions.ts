@@ -13,6 +13,12 @@ const loginSchema = z.object({
   password: z.string().min(1, 'Password is required.'),
 });
 
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error('JWT_SECRET is not defined in environment variables');
+}
+const secret = new TextEncoder().encode(JWT_SECRET);
+
 export async function login(formData: unknown) {
   const validatedFields = loginSchema.safeParse(formData);
 
@@ -46,7 +52,6 @@ export async function login(formData: unknown) {
     }
 
     // Create session
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'your-fallback-secret');
     const alg = 'HS256';
 
     const jwt = await new SignJWT({ userId: user._id, role: user.role })
