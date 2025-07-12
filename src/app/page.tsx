@@ -57,7 +57,7 @@ export default function Home() {
           </Suspense>
         </div>
         <div className="container px-4 md:px-6">
-          <div className="mx-auto max-w-3xl space-y-4 rounded-lg border border-border/50 bg-background/20 p-8 backdrop-blur-sm">
+          <div className="mx-auto max-w-3xl space-y-4 rounded-lg border border-border bg-background/20 p-8 backdrop-blur-sm">
             <h1 className="font-headline text-4xl font-bold tracking-tighter text-foreground hero-text-shadow md:text-6xl lg:text-7xl">
               Artistry in Every Bite.
             </h1>
