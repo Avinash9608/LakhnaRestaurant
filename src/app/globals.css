@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --background-start-hsl: 25 100% 97%; /* Light Peach */
-    --background-end-hsl: 330 100% 98%; /* Light Pink */
+    --background-start-hsl: 14 90% 97%; /* Very Light Orange */
+    --background-end-hsl: 320 85% 98%; /* Very Light Magenta */
     --foreground: 224 71.4% 4.1%;
     --card: 25 100% 96%;
     --card-foreground: 224 71.4% 4.1%;
