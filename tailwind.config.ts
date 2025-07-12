@@ -17,9 +17,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['Montserrat', 'sans-serif'],
-        headline: ['"Playfair Display"', 'serif'],
-        code: ['monospace'],
+        body: ['Lora', 'serif'],
+        headline: ['Lora', 'serif'],
+        code: ['"Libertinus Mono"', 'monospace'],
       },
       colors: {
         background: 'hsl(var(--background))',
