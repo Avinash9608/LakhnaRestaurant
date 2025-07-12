@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { Header } from '@/components/header';
+import { Footer } from '@/components/footer';
 import { CartProvider } from '@/context/cart-context';
 import { Lora, Open_Sans } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -48,6 +49,7 @@ export default function RootLayout({
             <div className="relative flex min-h-screen flex-col">
               <Header />
               <main className="flex-1">{children}</main>
+              <Footer />
             </div>
             <Toaster />
           </CartProvider>
