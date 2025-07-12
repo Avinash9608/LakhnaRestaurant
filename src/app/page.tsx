@@ -3,7 +3,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Suspense } from 'react';
-import { cn } from '@/lib/utils';
 import {
   Card,
   CardContent,
@@ -58,11 +57,11 @@ export default function Home() {
           </Suspense>
         </div>
         <div className="container px-4 md:px-6">
-          <div className="mx-auto max-w-3xl space-y-4 rounded-lg bg-black/50 p-8 backdrop-blur-sm">
-            <h1 className="font-headline text-4xl font-bold tracking-tighter md:text-6xl lg:text-7xl">
+          <div className="mx-auto max-w-3xl space-y-4 rounded-lg bg-background/20 p-8 backdrop-blur-sm">
+            <h1 className="font-headline text-4xl font-bold tracking-tighter text-foreground hero-text-shadow md:text-6xl lg:text-7xl">
               Artistry in Every Bite.
             </h1>
-            <p className="text-lg text-gray-200 md:text-xl">
+            <p className="text-lg text-foreground/90 hero-text-shadow md:text-xl">
              “Fresh. Fast. Finger-lickin’ good.”
             </p>
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
