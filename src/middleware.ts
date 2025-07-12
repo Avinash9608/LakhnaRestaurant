@@ -9,11 +9,15 @@ export async function middleware(request: NextRequest) {
     console.error('JWT_SECRET is not defined, redirecting to login.');
     return NextResponse.redirect(new URL('/admin-login', request.url));
   }
+
   const secret = new TextEncoder().encode(JWT_SECRET);
   const sessionCookie = request.cookies.get('session');
 
-  if (request.nextUrl.pathname.startsWith('/dashboard')) {
-    if (!sessionCookie) {
+  const protectedPaths = ['/dashboard'];
+  const isProtected = protectedPaths.some(path => request.nextUrl.pathname.startsWith(path));
+
+  if (isProtected) {
+    if (!sessionCookie?.value) {
       return NextResponse.redirect(new URL('/admin-login', request.url));
     }
 
@@ -22,8 +26,17 @@ export async function middleware(request: NextRequest) {
       if (payload.role !== 'admin') {
         throw new Error('Not an admin');
       }
-      // Valid session, continue to the dashboard
-      return NextResponse.next();
+      
+      // Valid session, continue to the requested page
+      const requestHeaders = new Headers(request.headers);
+      requestHeaders.set('x-user-id', payload.userId as string);
+      
+      return NextResponse.next({
+        request: {
+          headers: requestHeaders,
+        },
+      });
+
     } catch (err) {
       // Invalid token, clear the cookie and redirect to login
       const response = NextResponse.redirect(new URL('/admin-login', request.url));
