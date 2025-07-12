@@ -62,8 +62,6 @@ export async function login(formData: unknown) {
       path: '/',
     });
 
-    return { success: true, message: 'Logged in successfully.' };
-
   } catch (error) {
     console.error('Login Error:', error);
     return {
@@ -71,4 +69,6 @@ export async function login(formData: unknown) {
       message: 'An unexpected error occurred. Please try again.',
     };
   }
+  
+  redirect('/dashboard');
 }

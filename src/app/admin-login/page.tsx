@@ -44,21 +44,18 @@ export default function AdminLoginPage() {
   const onSubmit = async (data: LoginFormValues) => {
     setIsSubmitting(true);
     const result = await login(data);
-    setIsSubmitting(false);
-
-    if (result.success) {
-      toast({
-        title: 'Success!',
-        description: 'Logged in successfully.',
-      });
-      router.push('/dashboard');
-    } else {
-      toast({
+    
+    // If login fails, the action will return an object with success: false
+    if (result?.success === false) {
+       toast({
         variant: 'destructive',
         title: 'Login Failed',
         description: result.message,
       });
     }
+    // If login succeeds, the action redirects, so we don't need to do anything here.
+    // We just need to handle the case where the user might still be on the page if the redirect is pending.
+    setIsSubmitting(false);
   };
 
   return (
