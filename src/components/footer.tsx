@@ -88,9 +88,14 @@ export function Footer() {
             </div>
             <div>
               <p className="font-headline font-medium">Visit Us</p>
-              <p className="mt-4 text-sm text-muted-foreground">
+              <a
+                href="https://maps.google.com/?q=Lakhna,Bihar,804453,India"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 block text-sm text-muted-foreground transition hover:text-primary"
+              >
                 Lakhna, Bihar 804453, India
-              </p>
+              </a>
             </div>
           </div>
         </div>
