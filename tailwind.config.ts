@@ -17,8 +17,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['"Open Sans"', 'sans-serif'],
-        headline: ['Lora', 'serif'],
+        body: ['Montserrat', 'sans-serif'],
+        headline: ['"Playfair Display"', 'serif'],
         code: ['monospace'],
       },
       colors: {
