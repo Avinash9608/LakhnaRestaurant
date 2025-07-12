@@ -1,45 +1,112 @@
 'use client';
 
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Sphere } from '@react-three/drei';
+import { OrbitControls, Float } from '@react-three/drei';
 import { useRef } from 'react';
 import type { Group } from 'three';
+import { Fork, Knife, Spoon } from 'lucide-react';
 
-function ColorfulSpheres() {
+const SvgShape = ({ shape, color, ...props }: any) => {
+  return (
+    <group {...props}>
+      <mesh>
+        <extrudeGeometry args={[shape, { depth: 8, bevelEnabled: false }]} />
+        <meshStandardMaterial
+          color={color}
+          metalness={0.5}
+          roughness={0.5}
+          envMapIntensity={2}
+        />
+      </mesh>
+    </group>
+  );
+};
+
+const UtensilIcon = ({ icon: Icon, ...props }: any) => {
+  const Svg = Icon as any;
+  const a = Svg({}).props.children[0].props.d;
+  const b = Svg({}).props.children[1]?.props.d;
+
+  return (
+    <group {...props}>
+      {a && (
+        <mesh>
+          <meshBasicMaterial color="hotpink" />
+        </mesh>
+      )}
+    </group>
+  );
+};
+
+function RestaurantIcons() {
   const groupRef = useRef<Group>(null!);
 
-  useFrame((state, delta) => {
+  useFrame((_state, delta) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y += delta * 0.3;
-      groupRef.current.rotation.z += delta * 0.1;
-      const t = state.clock.getElapsedTime();
-      groupRef.current.position.y = Math.sin(t) * 0.2;
+      groupRef.current.rotation.y += delta * 0.2;
     }
   });
 
-  const spheres = [
-    { color: '#ff6b6b', position: [0, 0, 0], scale: 1.2, roughness: 0.1, metalness: 0.6 },
-    { color: '#4ecdc4', position: [2, 1, -1], scale: 0.8, roughness: 0.5, metalness: 0.2 },
-    { color: '#45b7d1', position: [-2, -1, 1], scale: 0.9, roughness: 0.2, metalness: 0.8 },
-    { color: '#f7d794', position: [1, -2, -2], scale: 0.7, roughness: 0.8, metalness: 0.1 },
-    { color: '#a29bfe', position: [-1, 2, 2], scale: 0.6, roughness: 0.3, metalness: 0.9 },
-  ];
+  return (
+    <group ref={groupRef}>
+      <Float speed={4} rotationIntensity={1} floatIntensity={2}>
+        <group position={[-2, 0, 0]} rotation={[0, 0, Math.PI / 4]}>
+          <UtensilIcon icon={Fork} />
+        </group>
+        <group position={[0, 0, 0]} rotation={[0, 0, Math.PI / 4]}>
+          <UtensilIcon icon={Knife} />
+        </group>
+        <group position={[2, 0, 0]} rotation={[0, 0, Math.PI / 4]}>
+          <UtensilIcon icon={Spoon} />
+        </group>
+      </Float>
+    </group>
+  );
+}
+
+function FloatingUtensils() {
+  const groupRef = useRef<Group>(null);
+  useFrame((state, delta) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y += delta * 0.2;
+      const t = state.clock.getElapsedTime();
+      groupRef.current.position.y = Math.sin(t * 0.5) * 0.3;
+    }
+  });
+
+  const Icon = ({
+    icon,
+    position,
+    rotation,
+  }: {
+    icon: React.ElementType;
+    position: [number, number, number];
+    rotation: [number, number, number];
+  }) => (
+    <Float speed={5} rotationIntensity={0.5} floatIntensity={1}>
+      <group position={position} rotation={rotation}>
+        {React.createElement(icon, {
+          className: 'h-48 w-48 text-primary',
+          strokeWidth: 1,
+        })}
+      </group>
+    </Float>
+  );
 
   return (
     <group ref={groupRef}>
-      {spheres.map((sphere, index) => (
-        <Sphere
-          key={index}
-          position={sphere.position as [number, number, number]}
-          args={[sphere.scale, 32, 32]}
-        >
-          <meshStandardMaterial
-            color={sphere.color}
-            roughness={sphere.roughness}
-            metalness={sphere.metalness}
-          />
-        </Sphere>
-      ))}
+      <mesh position={[-2, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
+        <torusGeometry args={[1, 0.1, 16, 100]} />
+        <meshStandardMaterial color="hsl(var(--primary))" metalness={0.6} roughness={0.2} />
+      </mesh>
+       <mesh position={[2, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
+        <torusGeometry args={[1, 0.1, 16, 100]} />
+        <meshStandardMaterial color="hsl(var(--accent))" metalness={0.6} roughness={0.2}/>
+      </mesh>
+       <mesh position={[0, 0, -2]} rotation={[Math.PI/2, 0, 0]}>
+        <cylinderGeometry args={[0.5, 0.5, 0.2, 32]} />
+        <meshStandardMaterial color="hsl(var(--secondary))" metalness={0.8} roughness={0.1}/>
+      </mesh>
     </group>
   );
 }
@@ -47,18 +114,26 @@ function ColorfulSpheres() {
 export function HeroScene() {
   return (
     <Canvas
-      camera={{ position: [0, 0, 10], fov: 45 }}
-      className="opacity-60"
+      camera={{ position: [0, 2, 12], fov: 45 }}
+      className="opacity-80"
     >
-      <ambientLight intensity={1.0} />
-      <directionalLight position={[5, 10, 7.5]} intensity={2.5} color="#ffffff" />
-      <directionalLight position={[-5, -5, -5]} intensity={1} color="#4ecdc4" />
-      <ColorfulSpheres />
+      <ambientLight intensity={1.5} />
+      <directionalLight
+        position={[5, 10, 7.5]}
+        intensity={3.5}
+        color="#ffffff"
+      />
+      <directionalLight
+        position={[-5, -5, -5]}
+        intensity={1.5}
+        color="hsl(var(--primary))"
+      />
+      <FloatingUtensils />
       <OrbitControls
         enableZoom={false}
         enablePan={false}
         autoRotate
-        autoRotateSpeed={0.5}
+        autoRotateSpeed={0.4}
         minPolarAngle={Math.PI / 3}
         maxPolarAngle={(2 * Math.PI) / 3}
       />
