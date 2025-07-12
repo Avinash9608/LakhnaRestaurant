@@ -2,8 +2,8 @@
 'use client';
 
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Float } from '@react-three/drei';
-import { useRef, useState, useEffect, useMemo } from 'react';
+import { OrbitControls, Float, Sparkles } from '@react-three/drei';
+import { useRef, useState, useMemo } from 'react';
 import type { Group, Mesh } from 'three';
 import * as THREE from 'three';
 import React from 'react';
@@ -26,13 +26,21 @@ function ChoppedPiece({ initialPosition, initialVelocity }: { initialPosition: T
       meshRef.current.position.add(velocity.current.clone().multiplyScalar(delta));
       meshRef.current.rotation.x += rotationSpeed.current.x;
       meshRef.current.rotation.y += rotationSpeed.current.y;
+
+      // Fade out and remove
+      if (meshRef.current.position.y < -1) {
+          (meshRef.current.material as THREE.MeshStandardMaterial).opacity -= 0.05;
+          if ((meshRef.current.material as THREE.MeshStandardMaterial).opacity <= 0) {
+              // De-render logic can be handled by parent state
+          }
+      }
     }
   });
 
   return (
-    <mesh ref={meshRef} position={initialPosition}>
+    <mesh ref={meshRef} position={initialPosition} castShadow>
       <cylinderGeometry args={[0.1, 0.1, 0.05, 16]} />
-      <meshStandardMaterial color="hsl(var(--accent))" roughness={0.6} />
+      <meshStandardMaterial color="hsl(var(--accent))" roughness={0.6} transparent />
     </mesh>
   );
 }
@@ -61,15 +69,18 @@ function ChoppingScene() {
         chopTime.current = 0;
 
         // Make carrot shorter
-        carrotRef.current.scale.x = Math.max(0.1, carrotRef.current.scale.x - 0.05);
+        const newScaleX = Math.max(0.1, carrotRef.current.scale.x - 0.05);
+        carrotRef.current.scale.x = newScaleX;
         if(carrotRef.current.scale.x <= 0.1) {
-            carrotRef.current.scale.x = 1; // Reset
+            setTimeout(() => {
+                if (carrotRef.current) carrotRef.current.scale.x = 1; // Reset after a delay
+            }, 500);
         }
 
         // Spawn a new piece
         const newPiece = {
             id: t,
-            position: new THREE.Vector3(1.1 * carrotRef.current.scale.x - 0.5, 0.2, (Math.random() - 0.5) * 0.1),
+            position: new THREE.Vector3(1.1 * newScaleX - 0.5, 0.2, (Math.random() - 0.5) * 0.1),
             velocity: new THREE.Vector3(
                 -0.5 + Math.random() * -1, 
                 2 + Math.random() * 2, 
@@ -77,11 +88,11 @@ function ChoppingScene() {
             ),
         }
 
-        setChoppedPieces(prev => [
-            ...prev.slice(-20), // Keep the last 20 pieces
-            <ChoppedPiece key={newPiece.id} initialPosition={newPiece.position} initialVelocity={newPiece.velocity} />
-        ]);
-
+        setChoppedPieces(prev => {
+            const newPieces = [...prev, <ChoppedPiece key={newPiece.id} initialPosition={newPiece.position} initialVelocity={newPiece.velocity} />];
+            // Remove old pieces that have faded out
+            return newPieces.slice(-30);
+        });
     }
   });
 
@@ -124,6 +135,38 @@ function ChoppingScene() {
   );
 }
 
+// Floating Tomato
+function FloatingTomato() {
+    return (
+        <Float speed={1.5} rotationIntensity={1.5} floatIntensity={0.5}>
+            <mesh position={[-1.2, 0.8, -0.5]} castShadow>
+                <sphereGeometry args={[0.2, 32, 32]} />
+                <meshStandardMaterial color="#E2725B" roughness={0.5} />
+            </mesh>
+        </Float>
+    );
+}
+
+// Floating Mushroom
+function FloatingMushroom() {
+    return (
+        <Float speed={1.2} rotationIntensity={1} floatIntensity={0.6}>
+            <group position={[1.5, 1, -0.7]}>
+                <mesh castShadow>
+                    {/* Cap */}
+                    <cylinderGeometry args={[0.2, 0.25, 0.1, 20]} />
+                    <meshStandardMaterial color="#F5F5DC" roughness={0.8} />
+                </mesh>
+                <mesh position={[0, -0.1, 0]} castShadow>
+                    {/* Stem */}
+                    <cylinderGeometry args={[0.08, 0.05, 0.2, 12]} />
+                    <meshStandardMaterial color="#F5F5DC" roughness={0.9} />
+                </mesh>
+            </group>
+        </Float>
+    );
+}
+
 
 export function HeroScene() {
   return (
@@ -145,8 +188,24 @@ export function HeroScene() {
         intensity={50}
         color="hsl(var(--accent))"
       />
+      <pointLight
+        position={[-5, 3, 5]}
+        intensity={30}
+        color="hsl(var(--primary))"
+      />
 
       <ChoppingScene />
+      <FloatingTomato />
+      <FloatingMushroom />
+      
+      <Sparkles
+        count={60}
+        scale={3}
+        size={2}
+        speed={0.3}
+        position={[0, 0.5, -1]}
+        color="hsl(var(--primary))"
+       />
 
       <OrbitControls
         enableZoom={false}
