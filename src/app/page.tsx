@@ -52,7 +52,7 @@ export default function Home() {
   return (
     <div className="w-full">
       <section className="relative flex h-[70vh] min-h-[500px] w-full items-center justify-center text-center text-white">
-        <div className="absolute inset-0 -z-10 h-full w-full bg-gradient-to-t from-background to-transparent">
+        <div className="absolute inset-0 -z-10 h-full w-full bg-gradient-to-t from-[#231d3d] to-[#1a1f2c]">
           <Suspense fallback={<div className="h-full w-full bg-zinc-900" />}>
             <HeroScene />
           </Suspense>
