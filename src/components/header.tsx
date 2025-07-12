@@ -35,11 +35,14 @@ export function Header() {
               key={link.href}
               href={link.href}
               className={cn(
-                'transition-colors hover:text-primary',
-                pathname === link.href ? 'text-primary' : 'text-muted-foreground'
+                'relative text-muted-foreground transition-colors hover:text-primary',
+                pathname === link.href && 'text-primary'
               )}
             >
               {link.label}
+              {pathname === link.href && (
+                <span className="absolute -bottom-2 left-0 h-0.5 w-full rounded-full bg-primary" />
+              )}
             </Link>
           ))}
         </nav>
