@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className="w-full">
       <section className="relative flex h-[70vh] w-full items-center justify-center text-center text-white">
-        <div className="absolute inset-0 -z-10 bg-black">
+        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-gray-900 via-gray-800 to-black">
           <Suspense
             fallback={
               <div className="flex h-full w-full items-center justify-center bg-zinc-900 text-white">
