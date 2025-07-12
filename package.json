@@ -38,6 +38,7 @@
     "@radix-ui/react-tooltip": "^1.1.8",
     "@react-three/drei": "^9.109.2",
     "@react-three/fiber": "^8.16.8",
+    "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
@@ -62,6 +63,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/mongoose": "^5.11.97",
     "@types/node": "^20",
     "@types/nodemailer": "^6.4.15",
