@@ -15,6 +15,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, ArrowRight } from 'lucide-react';
 import './home.css';
+import { HeroScene } from '@/components/hero-scene';
 
 const popularItems = [
   {
@@ -50,11 +51,14 @@ const popularItems = [
 export default function Home() {
   return (
     <div className="w-full">
-      <section className="relative flex h-[70vh] min-h-[500px] w-full items-center justify-center text-center bg-black/70 text-white">
-        <div className="absolute inset-0 -z-10 h-full w-full bg-cover bg-center bg-no-repeat hero-bg">
+      <section className="relative flex h-[70vh] min-h-[500px] w-full items-center justify-center text-center text-white">
+        <div className="absolute inset-0 -z-10 h-full w-full bg-gradient-to-t from-background to-transparent">
+          <Suspense fallback={<div className="h-full w-full bg-zinc-900" />}>
+            <HeroScene />
+          </Suspense>
         </div>
         <div className="container px-4 md:px-6">
-          <div className="mx-auto max-w-3xl space-y-4 rounded-lg p-8 text-white">
+          <div className="mx-auto max-w-3xl space-y-4 rounded-lg bg-black/50 p-8 backdrop-blur-sm">
             <h1 className="font-headline text-4xl font-bold tracking-tighter md:text-6xl lg:text-7xl">
               Artistry in Every Bite.
             </h1>
