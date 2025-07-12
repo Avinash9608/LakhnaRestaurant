@@ -7,6 +7,7 @@ export type MenuItem = {
   ingredients: string[];
   category: string;
   dataAiHint: string;
+  modelColor: string;
 };
 
 export type CartItem = {

@@ -11,6 +11,7 @@ const menuItems: MenuItem[] = [
     dataAiHint: 'risotto food',
     ingredients: ['Arborio Rice', 'Asparagus', 'Peas', 'Parmesan', 'Mint'],
     category: 'Appetizers',
+    modelColor: '#50C878',
   },
   {
     id: '2',
@@ -28,6 +29,7 @@ const menuItems: MenuItem[] = [
       'Basil',
     ],
     category: 'Appetizers',
+    modelColor: '#E2725B',
   },
   {
     id: '3',
@@ -39,6 +41,7 @@ const menuItems: MenuItem[] = [
     dataAiHint: 'salmon dish',
     ingredients: ['Salmon Fillet', 'Lemon', 'Dill', 'Carrots', 'Parsnips'],
     category: 'Main Courses',
+    modelColor: '#F08080',
   },
   {
     id: '4',
@@ -56,6 +59,7 @@ const menuItems: MenuItem[] = [
       'Red Wine',
     ],
     category: 'Main Courses',
+    modelColor: '#8B4513',
   },
   {
     id: '5',
@@ -67,6 +71,7 @@ const menuItems: MenuItem[] = [
     dataAiHint: 'panna cotta',
     ingredients: ['Heavy Cream', 'Vanilla Bean', 'Sugar', 'Berries'],
     category: 'Desserts',
+    modelColor: '#F5F5DC',
   },
   {
     id: '6',
@@ -78,6 +83,7 @@ const menuItems: MenuItem[] = [
     dataAiHint: 'chocolate cake',
     ingredients: ['Dark Chocolate', 'Butter', 'Eggs', 'Flour', 'Raspberries'],
     category: 'Desserts',
+    modelColor: '#4B3621',
   },
 ];
 

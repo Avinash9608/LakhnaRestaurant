@@ -1,7 +1,5 @@
 'use client';
 
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -14,6 +12,9 @@ import { Badge } from '@/components/ui/badge';
 import { useCart } from '@/context/cart-context';
 import type { MenuItem } from '@/lib/types';
 import { ShoppingBasket } from 'lucide-react';
+import { Button } from './ui/button';
+import { Menu3DScene } from './menu-3d-scene';
+import { Suspense } from 'react';
 
 export function MenuCard({ item }: { item: MenuItem }) {
   const { addItem } = useCart();
@@ -21,21 +22,16 @@ export function MenuCard({ item }: { item: MenuItem }) {
   return (
     <Card className="group flex h-full transform flex-col overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
       <CardHeader>
-        <div
-          className="relative mb-4 aspect-square w-full overflow-hidden rounded-md"
-          style={{ transformStyle: 'preserve-3d', perspective: '1000px' }}
-        >
-          <Image
-            src={item.image}
-            alt={item.name}
-            data-ai-hint={item.dataAiHint}
-            fill
-            className="object-cover transition-transform duration-500 ease-in-out group-hover:scale-110 group-hover:[transform:rotateY(15deg)_scale(1.2)]"
-          />
-          <div
-            className="absolute inset-0 bg-black/20 transition-opacity duration-500 group-hover:opacity-0"
-            aria-hidden="true"
-          />
+        <div className="relative mb-4 aspect-square w-full overflow-hidden rounded-md">
+          <Suspense
+            fallback={
+              <div className="flex h-full w-full items-center justify-center bg-zinc-200 text-zinc-500">
+                Loading...
+              </div>
+            }
+          >
+            <Menu3DScene modelColor={item.modelColor} />
+          </Suspense>
         </div>
         <CardTitle className="font-headline text-2xl">{item.name}</CardTitle>
         <CardDescription>{item.description}</CardDescription>
