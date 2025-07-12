@@ -9,16 +9,15 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { useCart } from '@/context/cart-context';
 import type { MenuItem } from '@/lib/types';
 import { ShoppingBasket } from 'lucide-react';
 import { Button } from './ui/button';
 import { Menu3DScene } from './menu-3d-scene';
 import { Suspense } from 'react';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 export function MenuCard({ item }: { item: MenuItem }) {
-  const { addItem } = useCart();
 
   return (
     <Card className="group flex h-full transform flex-col overflow-hidden bg-card/80 backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
@@ -49,11 +48,13 @@ export function MenuCard({ item }: { item: MenuItem }) {
       <CardFooter className="mt-auto flex items-center justify-between">
         <p className="text-2xl font-bold text-primary">${item.price.toFixed(2)}</p>
         <Button
-          onClick={() => addItem(item)}
+          asChild
           className="btn-gradient"
         >
-          <ShoppingBasket className="mr-2 h-4 w-4" />
-          Order Now
+          <Link href="/#order-section">
+            <ShoppingBasket className="mr-2 h-4 w-4" />
+            Order Now
+          </Link>
         </Button>
       </CardFooter>
     </Card>

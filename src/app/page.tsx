@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { ShoppingCart, ArrowRight, Star, PartyPopper } from 'lucide-react';
+import { ArrowRight, Star, PartyPopper } from 'lucide-react';
 import './home.css';
 import { HeroScene } from '@/components/hero-scene';
 
@@ -139,9 +139,8 @@ export default function Home() {
                 </CardContent>
                 <CardFooter className="flex items-center justify-between p-6 pt-0">
                   <p className="text-3xl font-bold text-primary">${item.price.toFixed(2)}</p>
-                  <Button variant="outline">
-                    <ShoppingCart className="mr-2 h-5 w-5" />
-                    Add to Cart
+                  <Button asChild className="btn-gradient">
+                    <Link href="#order-section">Order Now</Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -248,7 +247,7 @@ export default function Home() {
       </section>
 
       {/* Online Food */}
-      <section className="py-16 bg-background">
+      <section id="order-section" className="py-16 bg-background scroll-mt-20">
         <div className="container mx-auto px-4 md:px-6 text-center">
           <Card className="max-w-3xl mx-auto bg-card/80 p-8 shadow-lg">
             <h2 className="font-headline text-3xl md:text-4xl font-bold text-primary">
@@ -349,7 +348,7 @@ export default function Home() {
                   </Button>
                   <Button asChild size="lg" variant="secondary">
                      <a
-                        href="https://maps.google.com/?q=Lakhna,Bihar,804453"
+                        href="https://maps.google.com/?q=Lakhna,Bihar,804453,India"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
