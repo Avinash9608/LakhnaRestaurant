@@ -1,0 +1,6 @@
+
+.hero-bg {
+    background-image: url('https://placehold.co/1920x1080.png');
+    filter: blur(2px) brightness(0.6);
+    transform: scale(1.05);
+}
