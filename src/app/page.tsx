@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -22,10 +23,10 @@ export default function Home() {
         <div className="container px-4 md:px-6">
           <div className="mx-auto max-w-3xl space-y-4">
             <h1 className="font-headline text-4xl font-bold tracking-tighter md:text-6xl lg:text-7xl">
-              Welcome to Gastronomic Gateway
+              Artistry in Every Bite.
             </h1>
             <p className="text-lg text-gray-200 md:text-xl">
-              Where culinary artistry meets the finest ingredients.
+              Discover culinary excellence.
             </p>
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <Button
