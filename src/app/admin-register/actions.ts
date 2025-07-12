@@ -27,14 +27,17 @@ export async function registerAdmin(formData: unknown) {
   try {
     await dbConnect();
 
-    // Check if an admin already exists
-    const existingAdmin = await UserModel.findOne({ role: 'admin' });
+    // Check if a *verified* admin already exists
+    const existingAdmin = await UserModel.findOne({ role: 'admin', isVerified: true });
     if (existingAdmin) {
       return {
         success: false,
-        message: 'An admin account already exists. Registration is closed.',
+        message: 'A verified admin account already exists. Registration is closed.',
       };
     }
+
+    // If an unverified admin with the same email exists, remove it
+    await UserModel.deleteOne({ email, isVerified: false });
 
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
