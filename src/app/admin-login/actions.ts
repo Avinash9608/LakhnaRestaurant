@@ -6,7 +6,6 @@ import { z } from 'zod';
 import bcrypt from 'bcryptjs';
 import { SignJWT } from 'jose';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address.'),
