@@ -1,49 +1,42 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
-import { jwtVerify } from 'jose';
+'use server';
+
+import {NextResponse} from 'next/server';
+import type {NextRequest} from 'next/server';
+import {jwtVerify} from 'jose';
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
 export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
   const sessionCookie = request.cookies.get('session');
+  const loginUrl = new URL('/admin-login', request.url);
 
-  const protectedPaths = ['/dashboard'];
-  const isProtected = protectedPaths.some(path => pathname.startsWith(path));
-
-  if (isProtected) {
-    if (!JWT_SECRET) {
-      console.error('JWT_SECRET is not defined. Cannot verify session.');
-      return NextResponse.redirect(new URL('/admin-login', request.url));
-    }
-
-    if (!sessionCookie?.value) {
-      console.log('No session cookie found. Redirecting to login.');
-      return NextResponse.redirect(new URL('/admin-login', request.url));
-    }
-
-    try {
-      const secret = new TextEncoder().encode(JWT_SECRET);
-      const { payload } = await jwtVerify(sessionCookie.value, secret);
-
-      if (payload.role !== 'admin') {
-        console.log('User is not an admin. Redirecting to login.');
-        return NextResponse.redirect(new URL('/admin-login', request.url));
-      }
-      
-      // Valid session and role, allow access
-      return NextResponse.next();
-
-    } catch (err) {
-      console.log('JWT verification failed:', err);
-      // Invalid token, redirect to login
-      const response = NextResponse.redirect(new URL('/admin-login', request.url));
-      response.cookies.delete('session');
-      return response;
-    }
+  if (!JWT_SECRET) {
+    console.error('JWT_SECRET is not defined. Cannot verify session.');
+    return NextResponse.redirect(loginUrl);
   }
 
-  return NextResponse.next();
+  if (!sessionCookie?.value) {
+    return NextResponse.redirect(loginUrl);
+  }
+
+  try {
+    const secret = new TextEncoder().encode(JWT_SECRET);
+    const {payload} = await jwtVerify(sessionCookie.value, secret);
+
+    if (payload.role === 'admin') {
+      return NextResponse.next();
+    }
+    
+    // If role is not admin, redirect to login
+    return NextResponse.redirect(loginUrl);
+  } catch (err) {
+    // If token is invalid (expired, malformed, etc.), redirect to login
+    console.log('JWT verification failed, redirecting to login.');
+    const response = NextResponse.redirect(loginUrl);
+    // Clear the invalid cookie
+    response.cookies.delete('session');
+    return response;
+  }
 }
 
 export const config = {
