@@ -15,7 +15,6 @@ const navLinks = [
   { href: '/menu', label: 'Menu' },
   { href: '/reservations', label: 'Reservations' },
   { href: '/testimonials', label: 'Testimonials' },
-  { href: '/reviews', label: 'Write Review' },
 ];
 
 export function Header() {

@@ -37,6 +37,14 @@ export async function PUT(
   try {
     await dbConnect();
     
+    // Validate id parameter
+    if (!params.id) {
+      return NextResponse.json(
+        { error: 'Menu item ID is required' },
+        { status: 400 }
+      );
+    }
+    
     const body = await request.json();
     
     // Validate required fields
@@ -49,6 +57,16 @@ export async function PUT(
       );
     }
     
+    // Handle ingredients safely
+    let processedIngredients = [];
+    if (ingredients) {
+      if (Array.isArray(ingredients)) {
+        processedIngredients = ingredients;
+      } else if (typeof ingredients === 'string') {
+        processedIngredients = ingredients.split(',').map((i: string) => i.trim()).filter((i: string) => i);
+      }
+    }
+    
     const updatedMenuItem = await MenuItem.findByIdAndUpdate(
       params.id,
       {
@@ -57,7 +75,7 @@ export async function PUT(
         price: parseFloat(price),
         image,
         dataAiHint,
-        ingredients: Array.isArray(ingredients) ? ingredients : ingredients.split(',').map((i: string) => i.trim()).filter((i: string) => i),
+        ingredients: processedIngredients,
         category,
         modelColor: modelColor || '#3B82F6',
         isActive: body.isActive !== undefined ? body.isActive : true,

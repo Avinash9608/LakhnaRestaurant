@@ -76,13 +76,23 @@ export async function POST(request: NextRequest) {
       );
     }
     
+    // Handle ingredients safely
+    let processedIngredients = [];
+    if (ingredients) {
+      if (Array.isArray(ingredients)) {
+        processedIngredients = ingredients;
+      } else if (typeof ingredients === 'string') {
+        processedIngredients = ingredients.split(',').map((i: string) => i.trim()).filter((i: string) => i);
+      }
+    }
+    
     const menuItem = new MenuItem({
       name,
       description,
       price: parseFloat(price),
       image,
       dataAiHint,
-      ingredients: Array.isArray(ingredients) ? ingredients : ingredients.split(',').map((i: string) => i.trim()).filter((i: string) => i),
+      ingredients: processedIngredients,
       category,
       modelColor: modelColor || '#3B82F6',
       isActive: body.isActive !== undefined ? body.isActive : true,

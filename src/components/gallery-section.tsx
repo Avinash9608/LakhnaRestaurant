@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
+import 'keen-slider/keen-slider.min.css';
+import { useKeenSlider } from 'keen-slider/react';
 
 interface GalleryItem {
   _id: string;
@@ -19,9 +21,48 @@ interface GalleryItem {
   updatedAt: string;
 }
 
+function AutoplayPlugin(slider: any) {
+  let timeout: NodeJS.Timeout;
+  let mouseOver = false;
+  function clearNextTimeout() {
+    clearTimeout(timeout);
+  }
+  function nextTimeout() {
+    clearTimeout(timeout);
+    if (mouseOver) return;
+    timeout = setTimeout(() => {
+      slider.next();
+    }, 2500);
+  }
+  slider.on('created', () => {
+    slider.container.addEventListener('mouseover', () => {
+      mouseOver = true;
+      clearNextTimeout();
+    });
+    slider.container.addEventListener('mouseout', () => {
+      mouseOver = false;
+      nextTimeout();
+    });
+    nextTimeout();
+  });
+  slider.on('dragStarted', clearNextTimeout);
+  slider.on('animationEnded', nextTimeout);
+  slider.on('updated', nextTimeout);
+}
+
 export function GallerySection() {
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sliderRef] = useKeenSlider<HTMLDivElement>({
+    loop: true,
+    slides: { perView: 1, spacing: 16 },
+    breakpoints: {
+      '(min-width: 640px)': { slides: { perView: 2, spacing: 16 } },
+      '(min-width: 768px)': { slides: { perView: 3, spacing: 16 } },
+      '(min-width: 1024px)': { slides: { perView: 4, spacing: 16 } },
+    },
+    drag: true,
+  }, [AutoplayPlugin]);
 
   useEffect(() => {
     const fetchGalleryItems = async () => {
@@ -33,7 +74,7 @@ export function GallerySection() {
           const activeItems = data
             .filter((item: GalleryItem) => item.isActive)
             .sort((a: GalleryItem, b: GalleryItem) => a.order - b.order)
-            .slice(0, 8); // Limit to 8 items for the grid
+            .slice(0, 12); // Limit to 8 items for the grid
           setGalleryItems(activeItems);
         }
       } catch (error) {
@@ -62,11 +103,9 @@ export function GallerySection() {
         <div className="container px-4 md:px-6 text-center">
           <h2 className="font-headline text-3xl font-bold md:text-4xl">Our Food, Your Cravings 🍽️</h2>
           <p className="mt-2 text-lg text-muted-foreground">Take a bite through our lens – real clicks from our kitchen and happy customers.</p>
-          <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <div className="mt-12 flex gap-4 overflow-x-auto">
             {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-              <div key={i} className="animate-pulse">
-                <div className="bg-gray-300 rounded-lg h-48 w-full"></div>
-              </div>
+              <div key={i} className="animate-pulse min-w-[260px] max-w-xs w-full h-72 bg-gray-300 rounded-xl"></div>
             ))}
           </div>
         </div>
@@ -79,45 +118,38 @@ export function GallerySection() {
       <div className="container px-4 md:px-6 text-center">
         <h2 className="font-headline text-3xl font-bold md:text-4xl">Our Food, Your Cravings 🍽️</h2>
         <p className="mt-2 text-lg text-muted-foreground">Take a bite through our lens – real clicks from our kitchen and happy customers.</p>
-
         {galleryItems.length > 0 ? (
-          <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <div ref={sliderRef} className="keen-slider mt-12">
             {galleryItems.map((item) => (
-              <div key={item._id} className="group relative overflow-hidden rounded-lg shadow-lg transform transition-transform duration-300 hover:scale-105">
-                <Image
-                  src={item.imageUrl}
-                  alt={item.altText}
-                  width={300}
-                  height={300}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="absolute top-2 right-2">
-                  <Badge className={`${getCategoryColor(item.category)} text-xs`}>
-                    {item.category}
-                  </Badge>
-                </div>
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300 flex items-center justify-center">
-                  <div className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center p-4">
-                    <h3 className="font-semibold text-sm mb-1">{item.title}</h3>
-                    <p className="text-xs">{item.description}</p>
+              <div
+                key={item._id}
+                className="keen-slider__slide flex justify-center"
+              >
+                <div className="relative bg-background rounded-xl shadow-lg overflow-hidden max-w-xs w-full group transition-transform duration-300 hover:scale-105">
+                  <Image
+                    src={item.imageUrl}
+                    alt={item.altText}
+                    width={350}
+                    height={350}
+                    className="w-full h-72 object-cover"
+                  />
+                  <div className="absolute top-3 right-3 z-10">
+                    <Badge className={`${getCategoryColor(item.category)} text-xs`}>{item.category}</Badge>
+                  </div>
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all duration-300 flex items-end">
+                    <div className="w-full p-4 text-left opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white">
+                      <h3 className="font-semibold text-lg mb-1 truncate">{item.title}</h3>
+                      <p className="text-xs line-clamp-2">{item.description}</p>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <div className="mt-12 flex gap-4 overflow-x-auto">
             {[1, 2, 3, 4, 5, 6, 7, 8].map((img) => (
-              <div key={img} className="overflow-hidden rounded-lg shadow-lg group transform transition-transform duration-300 hover:scale-105">
-                <Image
-                  src={`https://placehold.co/300x300.png`}
-                  data-ai-hint={`food ${img}`}
-                  alt="Food gallery image"
-                  width={300}
-                  height={300}
-                  className="w-full h-48 object-cover"
-                />
-              </div>
+              <div key={img} className="min-w-[260px] max-w-xs w-full h-72 bg-gray-200 rounded-xl"></div>
             ))}
           </div>
         )}

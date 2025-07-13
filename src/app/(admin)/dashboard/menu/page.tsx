@@ -58,6 +58,7 @@ export default function MenuPage() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState('');
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   const { toast } = useToast();
   const api = useApi();
@@ -104,13 +105,12 @@ export default function MenuPage() {
 
   const handleUploadImage = async () => {
     if (!selectedFile) return;
-
+    setIsUploadingImage(true);
     try {
       const response = await api.uploadImage(selectedFile, 'menu-items');
-      setFormData(prev => ({ ...prev, image: response.secure_url }));
+      setFormData(prev => ({ ...prev, image: response.url }));
       setSelectedFile(null);
       setImagePreview('');
-      
       toast({
         title: "Success",
         description: "Image uploaded successfully",
@@ -122,10 +122,29 @@ export default function MenuPage() {
         description: "Failed to upload image",
         variant: "destructive",
       });
+    } finally {
+      setIsUploadingImage(false);
     }
   };
 
   const handleAddItem = async () => {
+    // Prevent add if image is uploading or not set
+    if (isUploadingImage) {
+      toast({
+        title: "Image Uploading",
+        description: "Please wait for the image to finish uploading before adding the item.",
+        variant: "destructive",
+      });
+      return;
+    }
+    if (!formData.image?.trim()) {
+      toast({
+        title: "Image Required",
+        description: "Please upload an image before adding the item.",
+        variant: "destructive",
+      });
+      return;
+    }
     // Validate required fields
     if (!formData.name?.trim() || !formData.description?.trim() || !formData.price || !formData.image?.trim() || !formData.dataAiHint?.trim() || !formData.category?.trim()) {
       const missingFields = [];
@@ -175,6 +194,17 @@ export default function MenuPage() {
   const handleEditItem = async () => {
     if (!editingItem) return;
 
+    // Get the correct ID
+    const itemId = editingItem._id || editingItem.id;
+    if (!itemId) {
+      toast({
+        title: "Error",
+        description: "Menu item ID is missing",
+        variant: "destructive",
+      });
+      return;
+    }
+
     // Validate required fields
     if (!formData.name?.trim() || !formData.description?.trim() || !formData.price || !formData.image?.trim() || !formData.dataAiHint?.trim() || !formData.category?.trim()) {
       const missingFields = [];
@@ -194,13 +224,13 @@ export default function MenuPage() {
     }
 
     try {
-      const updatedItem = await api.putData(`/api/menu-items/${editingItem.id}`, {
+      const updatedItem = await api.putData(`/api/menu-items/${itemId}`, {
         ...formData,
         price: parseFloat(formData.price),
       });
 
       setMenuItems(prev => prev.map(item => 
-        item.id === editingItem.id ? updatedItem : item
+        (item._id === itemId || item.id === itemId) ? updatedItem : item
       ));
       resetForm();
       setIsEditDialogOpen(false);
@@ -225,7 +255,7 @@ export default function MenuPage() {
 
     try {
       await api.deleteData(`/api/menu-items/${id}`);
-      setMenuItems(prev => prev.filter(item => item.id !== id));
+      setMenuItems(prev => prev.filter(item => (item._id !== id && item.id !== id)));
       toast({
         title: "Success",
         description: "Menu item deleted successfully",
@@ -360,31 +390,37 @@ export default function MenuPage() {
                     className="flex-1"
                   />
                   {selectedFile && (
-                    <Button onClick={handleUploadImage} disabled={api.loading} className="w-full sm:w-auto">
+                    <Button onClick={handleUploadImage} disabled={api.loading || isUploadingImage} className="w-full sm:w-auto">
                       <Upload className="h-4 w-4" />
                     </Button>
                   )}
                 </div>
-                {imagePreview && (
-                  <div className="relative inline-block">
-                    <img src={imagePreview} alt="Preview" className="h-20 w-20 object-cover rounded" />
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                      className="absolute -top-2 -right-2 h-6 w-6 p-0"
-                      onClick={() => {
-                        setSelectedFile(null);
-                        setImagePreview('');
-                      }}
-                    >
-                      <X className="h-3 w-3" />
-                    </Button>
-                  </div>
-                )}
-                {formData.image && (
-                  <div className="mt-2">
-                    <Label>Current Image</Label>
-                    <img src={formData.image} alt="Current" className="h-20 w-20 object-cover rounded mt-1" />
+                {/* Show preview if uploading or already uploaded */}
+                {(imagePreview || formData.image) && (
+                  <div className="relative inline-block mt-2">
+                    <img
+                      src={imagePreview || formData.image}
+                      alt="Preview"
+                      className="h-20 w-20 object-cover rounded border"
+                    />
+                    {(imagePreview || formData.image) && (
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        className="absolute -top-2 -right-2 h-6 w-6 p-0"
+                        onClick={() => {
+                          setSelectedFile(null);
+                          setImagePreview('');
+                          setFormData(prev => ({ ...prev, image: '' }));
+                        }}
+                        title="Remove Image"
+                      >
+                        <X className="h-3 w-3" />
+                      </Button>
+                    )}
+                    {formData.image && !imagePreview && (
+                      <span className="absolute bottom-0 left-0 bg-green-600 text-white text-xs px-2 py-0.5 rounded-tr">Uploaded</span>
+                    )}
                   </div>
                 )}
               </div>
@@ -403,8 +439,15 @@ export default function MenuPage() {
               <Button variant="outline" onClick={() => setIsAddDialogOpen(false)}>
                 Cancel
               </Button>
-              <Button onClick={handleAddItem} disabled={api.loading}>
-                {api.loading ? 'Adding...' : 'Add Item'}
+              <Button
+                onClick={handleAddItem}
+                disabled={api.loading || isUploadingImage || !formData.image?.trim()}
+              >
+                {api.loading
+                  ? 'Adding...'
+                  : isUploadingImage
+                  ? 'Uploading Image...'
+                  : 'Add Item'}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -459,7 +502,7 @@ export default function MenuPage() {
               </TableHeader>
               <TableBody>
                 {filteredItems.map((item) => (
-                  <TableRow key={item.id}>
+                  <TableRow key={item._id || item.id}>
                     <TableCell>
                       <img
                         src={item.image}
@@ -514,7 +557,7 @@ export default function MenuPage() {
           <div className="md:hidden">
             <div className="grid gap-4 p-4">
               {filteredItems.map((item) => (
-                <Card key={item.id} className="p-4">
+                <Card key={item._id || item.id} className="p-4">
                   <div className="flex items-start gap-4">
                     <img
                       src={item.image}
@@ -647,31 +690,37 @@ export default function MenuPage() {
                   className="flex-1"
                 />
                 {selectedFile && (
-                  <Button onClick={handleUploadImage} disabled={api.loading} className="w-full sm:w-auto">
+                  <Button onClick={handleUploadImage} disabled={api.loading || isUploadingImage} className="w-full sm:w-auto">
                     <Upload className="h-4 w-4" />
                   </Button>
                 )}
               </div>
-              {imagePreview && (
-                <div className="relative inline-block">
-                  <img src={imagePreview} alt="Preview" className="h-20 w-20 object-cover rounded" />
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                    className="absolute -top-2 -right-2 h-6 w-6 p-0"
-                    onClick={() => {
-                      setSelectedFile(null);
-                      setImagePreview('');
-                    }}
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                </div>
-              )}
-              {formData.image && (
-                <div className="mt-2">
-                  <Label>Current Image</Label>
-                  <img src={formData.image} alt="Current" className="h-20 w-20 object-cover rounded mt-1" />
+              {/* Show preview if uploading or already uploaded */}
+              {(imagePreview || formData.image) && (
+                <div className="relative inline-block mt-2">
+                  <img
+                    src={imagePreview || formData.image}
+                    alt="Preview"
+                    className="h-20 w-20 object-cover rounded border"
+                  />
+                  {(imagePreview || formData.image) && (
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      className="absolute -top-2 -right-2 h-6 w-6 p-0"
+                      onClick={() => {
+                        setSelectedFile(null);
+                        setImagePreview('');
+                        setFormData(prev => ({ ...prev, image: '' }));
+                      }}
+                      title="Remove Image"
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  )}
+                  {formData.image && !imagePreview && (
+                    <span className="absolute bottom-0 left-0 bg-green-600 text-white text-xs px-2 py-0.5 rounded-tr">Uploaded</span>
+                  )}
                 </div>
               )}
             </div>
