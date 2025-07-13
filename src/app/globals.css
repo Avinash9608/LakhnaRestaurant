@@ -85,6 +85,68 @@
     transform: scaleX(1);
     transform-origin: bottom left;
   }
+
+  /* Responsive text utilities */
+  .text-responsive-xs {
+    @apply text-xs sm:text-sm;
+  }
+  
+  .text-responsive-sm {
+    @apply text-sm sm:text-base;
+  }
+  
+  .text-responsive-base {
+    @apply text-base sm:text-lg;
+  }
+  
+  .text-responsive-lg {
+    @apply text-lg sm:text-xl;
+  }
+  
+  .text-responsive-xl {
+    @apply text-xl sm:text-2xl;
+  }
+  
+  .text-responsive-2xl {
+    @apply text-2xl sm:text-3xl;
+  }
+  
+  .text-responsive-3xl {
+    @apply text-3xl sm:text-4xl;
+  }
+  
+  .text-responsive-4xl {
+    @apply text-4xl sm:text-5xl;
+  }
+  
+  .text-responsive-5xl {
+    @apply text-5xl sm:text-6xl;
+  }
+
+  /* Responsive spacing utilities */
+  .space-responsive-y {
+    @apply space-y-4 sm:space-y-6 lg:space-y-8;
+  }
+  
+  .space-responsive-x {
+    @apply space-x-4 sm:space-x-6 lg:space-x-8;
+  }
+  
+  .gap-responsive {
+    @apply gap-4 sm:gap-6 lg:gap-8;
+  }
+  
+  .p-responsive {
+    @apply p-4 sm:p-6 lg:p-8;
+  }
+  
+  .px-responsive {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+  
+  .py-responsive {
+    @apply py-4 sm:py-6 lg:py-8;
+  }
 }
 
 @layer components {
@@ -101,5 +163,69 @@
   }
   .btn-gradient:hover {
     background-position: right center;
+  }
+  
+  /* Responsive card styles */
+  .card-responsive {
+    @apply p-4 sm:p-6 lg:p-8;
+  }
+  
+  /* Responsive grid layouts */
+  .grid-responsive-1 {
+    @apply grid-cols-1;
+  }
+  
+  .grid-responsive-2 {
+    @apply grid-cols-1 sm:grid-cols-2;
+  }
+  
+  .grid-responsive-3 {
+    @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
+  }
+  
+  .grid-responsive-4 {
+    @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-4;
+  }
+  
+  /* Mobile-first responsive containers */
+  .container-responsive {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* Responsive hero section */
+  .hero-responsive {
+    @apply h-[50vh] sm:h-[60vh] md:h-[70vh] min-h-[350px] sm:min-h-[400px] md:min-h-[500px];
+  }
+  
+  /* Responsive navigation */
+  .nav-responsive {
+    @apply hidden md:flex;
+  }
+  
+  .nav-mobile {
+    @apply md:hidden;
+  }
+  
+  /* Responsive tables */
+  .table-responsive {
+    @apply hidden md:block;
+  }
+  
+  .table-mobile {
+    @apply md:hidden;
+  }
+  
+  /* Responsive dialogs */
+  .dialog-responsive {
+    @apply max-w-[95vw] sm:max-w-2xl max-h-[90vh];
+  }
+  
+  /* Responsive forms */
+  .form-responsive {
+    @apply grid gap-4 sm:gap-6;
+  }
+  
+  .form-grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-4;
   }
 }

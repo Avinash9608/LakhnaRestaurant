@@ -1,116 +1,68 @@
+"use client";
+
 import { MenuCard } from '@/components/menu-card';
 import type { MenuItem } from '@/lib/types';
-
-const menuItems: MenuItem[] = [
-  {
-    id: '1',
-    name: 'Emerald Risotto',
-    description: 'Creamy Arborio rice with asparagus, peas, and a hint of mint.',
-    price: 350,
-    image: 'https://placehold.co/400x400.png',
-    dataAiHint: 'risotto food',
-    ingredients: ['Arborio Rice', 'Asparagus', 'Peas', 'Parmesan', 'Mint'],
-    category: 'Appetizers',
-    modelColor: '#50C878',
-  },
-  {
-    id: '2',
-    name: 'Terracotta Bruschetta',
-    description:
-      'Toasted artisan bread with a medley of sun-dried tomatoes, olives, and capers.',
-    price: 250,
-    image: 'https://placehold.co/400x400.png',
-    dataAiHint: 'bruschetta food',
-    ingredients: [
-      'Artisan Bread',
-      'Sun-dried Tomatoes',
-      'Kalamata Olives',
-      'Capers',
-      'Basil',
-    ],
-    category: 'Appetizers',
-    modelColor: '#E2725B',
-  },
-  {
-    id: '3',
-    name: 'Gateway Salmon',
-    description:
-      'Pan-seared salmon with a lemon-dill sauce, served with roasted root vegetables.',
-    price: 650,
-    image: 'https://placehold.co/400x400.png',
-    dataAiHint: 'salmon dish',
-    ingredients: ['Salmon Fillet', 'Lemon', 'Dill', 'Carrots', 'Parsnips'],
-    category: 'Main Courses',
-    modelColor: '#F08080',
-  },
-  {
-    id: '4',
-    name: 'Forest Floor Steak',
-    description:
-      '8oz filet mignon with a wild mushroom reduction, paired with truffle mashed potatoes.',
-    price: 850,
-    image: 'https://placehold.co/400x400.png',
-    dataAiHint: 'steak dish',
-    ingredients: [
-      'Filet Mignon',
-      'Wild Mushrooms',
-      'Truffle Oil',
-      'Potatoes',
-      'Red Wine',
-    ],
-    category: 'Main Courses',
-    modelColor: '#8B4513',
-  },
-  {
-    id: '5',
-    name: 'Beige Panna Cotta',
-    description:
-      'A delicate vanilla bean panna cotta with a seasonal fruit coulis.',
-    price: 220,
-    image: 'https://placehold.co/400x400.png',
-    dataAiHint: 'panna cotta',
-    ingredients: ['Heavy Cream', 'Vanilla Bean', 'Sugar', 'Berries'],
-    category: 'Desserts',
-    modelColor: '#F5F5DC',
-  },
-  {
-    id: '6',
-    name: 'Molten Lava Cake',
-    description:
-      'Rich chocolate cake with a gooey center, served with raspberry sorbet.',
-    price: 280,
-    image: 'https://placehold.co/400x400.png',
-    dataAiHint: 'chocolate cake',
-    ingredients: ['Dark Chocolate', 'Butter', 'Eggs', 'Flour', 'Raspberries'],
-    category: 'Desserts',
-    modelColor: '#4B3621',
-  },
-];
-
-const categories = ['Appetizers', 'Main Courses', 'Desserts'];
+import { useEffect, useState } from 'react';
 
 export default function MenuPage() {
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMenuItems = async () => {
+      try {
+        const res = await fetch('/api/menu-items');
+        if (res.ok) {
+          const data = await res.json();
+          setMenuItems(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch menu items:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchMenuItems();
+  }, []);
+
+  // Get unique categories from menu items
+  const categories = Array.from(new Set(menuItems.map(item => item.category)));
+
+  if (loading) {
+    return (
+      <div className="container py-8 sm:py-12 px-4 sm:px-6 lg:px-8 text-center">
+        <h1 className="font-headline text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-8">Our Menu</h1>
+        <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8">A symphony of flavors, crafted with passion.</p>
+        <div className="text-lg sm:text-xl">Loading menu...</div>
+      </div>
+    );
+  }
+
   return (
-    <div className="container py-12 px-4 md:px-6">
-      <div className="mb-12 text-center">
-        <h1 className="font-headline text-4xl font-bold md:text-5xl">
+    <div className="container py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
+      <div className="mb-8 sm:mb-12 text-center">
+        <h1 className="font-headline text-3xl sm:text-4xl lg:text-5xl font-bold">
           Our Menu
         </h1>
-        <p className="mt-2 text-lg text-muted-foreground">
+        <p className="mt-2 text-base sm:text-lg text-muted-foreground">
           A symphony of flavors, crafted with passion.
         </p>
       </div>
 
+      {categories.length === 0 && (
+        <div className="text-center text-muted-foreground">No menu items found.</div>
+      )}
+
       {categories.map(category => (
-        <div key={category} className="mb-12">
-          <h2 className="mb-8 border-b-2 border-primary pb-2 font-headline text-3xl font-bold">
+        <div key={category} className="mb-8 sm:mb-12">
+          <h2 className="mb-6 sm:mb-8 border-b-2 border-primary pb-2 font-headline text-2xl sm:text-3xl font-bold">
             {category}
           </h2>
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 sm:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {menuItems
               .filter(item => item.category === category)
               .map(item => (
-                <MenuCard key={item.id} item={item} />
+                <MenuCard key={item._id || item.id || item.name} item={item} />
               ))}
           </div>
         </div>

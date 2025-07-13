@@ -8,7 +8,7 @@ async function dbConnect() {
   }
 
   try {
-    const db = await mongoose.connect(process.env.ATLAS_URI!, {
+    const db = await mongoose.connect(process.env.MONGODB_URI || process.env.ATLAS_URI || process.env.ATLAS_URL!, {
       dbName: 'gastronomic-gateway',
     });
 
@@ -21,3 +21,4 @@ async function dbConnect() {
 }
 
 export default dbConnect;
+export { dbConnect as connectDB };

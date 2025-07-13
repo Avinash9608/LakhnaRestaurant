@@ -32,3 +32,18 @@ export async function sendVerificationEmail(email: string, otp: string) {
     return { success: false, message: 'Failed to send verification email.' };
   }
 }
+
+export async function sendMail({ to, subject, html }: { to: string; subject: string; html: string }) {
+  try {
+    await transporter.sendMail({
+      from: `"Lakhna Restaurant" <${process.env.EMAIL_USER}>`,
+      to,
+      subject,
+      html,
+    });
+    return { success: true, message: 'Email sent successfully.' };
+  } catch (error) {
+    console.error('Error sending email:', error);
+    return { success: false, message: 'Failed to send email.' };
+  }
+}

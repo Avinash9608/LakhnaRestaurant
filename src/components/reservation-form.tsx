@@ -13,20 +13,22 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { createReservation } from '@/app/reservations/actions';
 import { useState } from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, CheckCircle } from 'lucide-react';
 
 const reservationSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters.'),
   phone: z.string().min(10, 'Please enter a valid phone number.'),
+  email: z.string().email('Please enter a valid email address.'),
   date: z.string().min(1, 'Please select a date.'),
   time: z.string().min(1, 'Please select a time.'),
-  guests: z.coerce
+  people: z.coerce
     .number()
-    .min(1, 'Must have at least 1 guest.')
-    .max(12, 'For parties larger than 12, please call us.'),
+    .min(1, 'Must have at least 1 person.')
+    .max(20, 'For parties larger than 20, please call us.'),
+  specialRequests: z.string().optional(),
 });
 
 type ReservationFormValues = z.infer<typeof reservationSchema>;
@@ -34,35 +36,81 @@ type ReservationFormValues = z.infer<typeof reservationSchema>;
 export function ReservationForm() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const form = useForm<ReservationFormValues>({
     resolver: zodResolver(reservationSchema),
     defaultValues: {
       name: '',
       phone: '',
+      email: '',
       date: new Date().toISOString().split('T')[0],
       time: '19:00',
-      guests: 2,
+      people: 2,
+      specialRequests: '',
     },
   });
 
   async function onSubmit(data: ReservationFormValues) {
     setIsSubmitting(true);
-    const result = await createReservation(data);
-    setIsSubmitting(false);
+    
+    try {
+      const response = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: data.name,
+          phone: data.phone,
+          email: data.email || undefined,
+          date: data.date,
+          time: data.time,
+          people: data.people,
+          specialRequests: data.specialRequests || undefined,
+        }),
+      });
 
-    if (result.errors) {
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to create booking');
+      }
+
+      toast({
+        title: 'Booking Submitted!',
+        description: result.message,
+      });
+      
+      setIsSuccess(true);
+      form.reset();
+    } catch (error) {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: 'Please check the form for errors.',
+        description: error instanceof Error ? error.message : 'Failed to submit booking',
       });
-    } else {
-      toast({
-        title: 'Success!',
-        description: result.message,
-      });
-      form.reset();
+    } finally {
+      setIsSubmitting(false);
     }
+  }
+
+  if (isSuccess) {
+    return (
+      <div className="text-center space-y-4">
+        <CheckCircle className="h-16 w-16 text-green-500 mx-auto" />
+        <h3 className="text-xl font-semibold">Booking Submitted Successfully!</h3>
+        <p className="text-muted-foreground">
+          We have received your table reservation request. Our team will confirm your booking via email and WhatsApp within 2 hours.
+        </p>
+        <Button
+          onClick={() => setIsSuccess(false)}
+          variant="outline"
+          className="mt-4"
+        >
+          Make Another Booking
+        </Button>
+      </div>
+    );
   }
 
   return (
@@ -73,7 +121,7 @@ export function ReservationForm() {
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Full Name</FormLabel>
+              <FormLabel>Full Name *</FormLabel>
               <FormControl>
                 <Input placeholder="John Doe" {...field} />
               </FormControl>
@@ -81,26 +129,42 @@ export function ReservationForm() {
             </FormItem>
           )}
         />
+        
         <FormField
           control={form.control}
           name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>WhatsApp Phone Number</FormLabel>
+              <FormLabel>WhatsApp Phone Number *</FormLabel>
               <FormControl>
-                <Input placeholder="+1 555-555-5555" {...field} />
+                <Input placeholder="9608989499" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+        
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email Address *</FormLabel>
+              <FormControl>
+                <Input placeholder="john@example.com" type="email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
         <div className="grid gap-6 md:grid-cols-2">
           <FormField
             control={form.control}
             name="date"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Date</FormLabel>
+                <FormLabel>Date *</FormLabel>
                 <FormControl>
                   <Input type="date" {...field} />
                 </FormControl>
@@ -113,7 +177,7 @@ export function ReservationForm() {
             name="time"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Time</FormLabel>
+                <FormLabel>Time *</FormLabel>
                 <FormControl>
                   <Input type="time" {...field} />
                 </FormControl>
@@ -122,19 +186,39 @@ export function ReservationForm() {
             )}
           />
         </div>
+        
         <FormField
           control={form.control}
-          name="guests"
+          name="people"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Number of Guests</FormLabel>
+              <FormLabel>Number of People *</FormLabel>
               <FormControl>
-                <Input type="number" min="1" max="12" {...field} />
+                <Input type="number" min="1" max="20" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+        
+        <FormField
+          control={form.control}
+          name="specialRequests"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Special Requests (Optional)</FormLabel>
+              <FormControl>
+                <Textarea 
+                  placeholder="Any special requests or dietary requirements..."
+                  className="resize-none"
+                  {...field} 
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        
         <Button
           type="submit"
           className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
@@ -142,8 +226,12 @@ export function ReservationForm() {
           disabled={isSubmitting}
         >
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isSubmitting ? 'Booking...' : 'Book a Table'}
+          {isSubmitting ? 'Submitting...' : 'Book a Table'}
         </Button>
+        
+        <p className="text-xs text-muted-foreground text-center">
+          * Required fields. We'll send confirmation to your email and WhatsApp.
+        </p>
       </form>
     </Form>
   );

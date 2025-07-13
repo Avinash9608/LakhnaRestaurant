@@ -1,5 +1,6 @@
 export type MenuItem = {
-  id: string;
+  _id?: string;
+  id?: string;
   name: string;
   description: string;
   price: number;
@@ -8,6 +9,21 @@ export type MenuItem = {
   category: string;
   dataAiHint: string;
   modelColor: string;
+};
+
+export type PopularItem = {
+  _id?: string;
+  id?: string;
+  name: string;
+  description: string;
+  price: number;
+  image: string;
+  dataAiHint: string;
+  tags: string[];
+  isActive: boolean;
+  order: number;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type CartItem = {

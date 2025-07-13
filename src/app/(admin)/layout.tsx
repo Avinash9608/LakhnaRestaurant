@@ -1,37 +1,9 @@
-import {
-  Bell,
-  CircleUser,
-  Home,
-  Menu,
-  Package,
-  Package2,
-  Search,
-  ShoppingCart,
-  Users,
-  Utensils,
-  BookMarked,
-  Settings,
-} from 'lucide-react';
 import Link from 'next/link';
+import { Utensils, Home, Package, Star, Tag, Users, Calendar, Settings } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { ThemeToggle } from '@/components/theme-toggle';
+import { Menu } from 'lucide-react';
 
 export default function DashboardLayout({
   children,
@@ -44,8 +16,8 @@ export default function DashboardLayout({
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
-              <Utensils className="h-6 w-6" />
-              <span className="">Gastronomic Gateway</span>
+              <Utensils className="h-5 w-5 sm:h-6 sm:w-6" />
+              <span className="text-sm sm:text-base">Gastronomic Gateway</span>
             </Link>
           </div>
           <div className="flex-1">
@@ -65,20 +37,34 @@ export default function DashboardLayout({
                 Menu Items
               </Link>
               <Link
-                href="/dashboard/reservations"
+                href="/dashboard/popular-items"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
-                <BookMarked className="h-4 w-4" />
-                Reservations
+                <Star className="h-4 w-4" />
+                Popular Items
               </Link>
               <Link
-                href="/dashboard/customers"
+                href="/dashboard/offers"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              >
+                <Tag className="h-4 w-4" />
+                Offers
+              </Link>
+              <Link
+                href="/dashboard/gallery"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Users className="h-4 w-4" />
-                Customers
+                Gallery
               </Link>
-               <Link
+              <Link
+                href="/dashboard/reservations"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              >
+                <Calendar className="h-4 w-4" />
+                Reservations
+              </Link>
+              <Link
                 href="/dashboard/settings"
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
@@ -90,14 +76,14 @@ export default function DashboardLayout({
           <div className="mt-auto p-4">
             <Card>
               <CardHeader className="p-2 pt-0 md:p-4">
-                <CardTitle>Upgrade to Pro</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-sm sm:text-base">Upgrade to Pro</CardTitle>
+                <CardDescription className="text-xs sm:text-sm">
                   Unlock all features and get unlimited access to our support
                   team.
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-                <Button size="sm" className="w-full">
+                <Button size="sm" className="w-full text-xs sm:text-sm">
                   Upgrade
                 </Button>
               </CardContent>
@@ -114,107 +100,100 @@ export default function DashboardLayout({
                 size="icon"
                 className="shrink-0 md:hidden"
               >
-                <Menu className="h-5 w-5" />
+                <Menu className="h-4 w-4" />
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="flex flex-col">
-              <nav className="grid gap-2 text-lg font-medium">
-                <Link
-                  href="/"
-                  className="flex items-center gap-2 text-lg font-semibold"
-                >
-                  <Utensils className="h-6 w-6" />
-                  <span className="sr-only">Gastronomic Gateway</span>
-                </Link>
-                <Link
-                  href="/dashboard"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
-                >
-                  <Home className="h-5 w-5" />
-                  Dashboard
-                </Link>
-                <Link
-                  href="/dashboard/menu"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Package className="h-5 w-5" />
-                  Menu Items
-                </Link>
-                <Link
-                  href="/dashboard/reservations"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <BookMarked className="h-5 w-5" />
-                  Reservations
-                </Link>
-                <Link
-                  href="/dashboard/customers"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Users className="h-5 w-5" />
-                  Customers
-                </Link>
-                <Link
-                  href="/dashboard/settings"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Settings className="h-5 w-5" />
-                  Settings
-                </Link>
-              </nav>
-              <div className="mt-auto">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Upgrade to Pro</CardTitle>
-                    <CardDescription>
-                      Unlock all features and get unlimited access to our
-                      support team.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <Button size="sm" className="w-full">
-                      Upgrade
-                    </Button>
-                  </CardContent>
-                </Card>
+            <SheetContent side="left" className="w-[280px] sm:w-[350px]">
+              <div className="flex h-full flex-col">
+                <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
+                  <Link href="/" className="flex items-center gap-2 font-semibold">
+                    <Utensils className="h-5 w-5 sm:h-6 sm:w-6" />
+                    <span className="text-sm sm:text-base">Gastronomic Gateway</span>
+                  </Link>
+                </div>
+                <div className="flex-1">
+                  <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+                    <Link
+                      href="/dashboard"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-primary bg-muted transition-all hover:text-primary"
+                    >
+                      <Home className="h-4 w-4" />
+                      Dashboard
+                    </Link>
+                    <Link
+                      href="/dashboard/menu"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    >
+                      <Package className="h-4 w-4" />
+                      Menu Items
+                    </Link>
+                    <Link
+                      href="/dashboard/popular-items"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    >
+                      <Star className="h-4 w-4" />
+                      Popular Items
+                    </Link>
+                    <Link
+                      href="/dashboard/offers"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    >
+                      <Tag className="h-4 w-4" />
+                      Offers
+                    </Link>
+                    <Link
+                      href="/dashboard/gallery"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    >
+                      <Users className="h-4 w-4" />
+                      Gallery
+                    </Link>
+                    <Link
+                      href="/dashboard/reservations"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    >
+                      <Calendar className="h-4 w-4" />
+                      Reservations
+                    </Link>
+                    <Link
+                      href="/dashboard/settings"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    >
+                      <Settings className="h-4 w-4" />
+                      Settings
+                    </Link>
+                  </nav>
+                </div>
+                <div className="mt-auto p-4">
+                  <Card>
+                    <CardHeader className="p-2 pt-0 md:p-4">
+                      <CardTitle className="text-sm sm:text-base">Upgrade to Pro</CardTitle>
+                      <CardDescription className="text-xs sm:text-sm">
+                        Unlock all features and get unlimited access to our support
+                        team.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+                      <Button size="sm" className="w-full text-xs sm:text-sm">
+                        Upgrade
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
             </SheetContent>
           </Sheet>
-          <div className="w-full flex-1">
-            <form>
-              <div className="relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  type="search"
-                  placeholder="Search products..."
-                  className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
-                />
-              </div>
-            </form>
+          <div className="ml-auto flex items-center gap-2">
+            <Link href="/" className="text-sm text-muted-foreground hover:text-primary">
+              View Site
+            </Link>
           </div>
-          <ThemeToggle/>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-5" />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </header>
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+        <main className="flex-1 overflow-auto">
           {children}
         </main>
       </div>
     </div>
   );
-}
+} 
