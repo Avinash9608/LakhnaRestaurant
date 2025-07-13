@@ -53,6 +53,34 @@ export default function HomePage() {
         </div>
       </section>
 
+
+      <section className="py-12 md:py-24 bg-muted/50">
+        <div className="container grid items-center gap-12 px-4 md:grid-cols-2 md:px-6">
+          <div>
+            <h2 className="mb-4 font-headline text-3xl font-bold md:text-4xl">
+              An Unforgettable Experience
+            </h2>
+            <p className="mb-6 text-muted-foreground">
+              At Gastronomic Gateway, we believe dining is more than just food;
+              it's a journey of the senses. Our chefs meticulously craft each
+              dish to perfection, using only the freshest, locally-sourced
+              ingredients.
+            </p>
+            <Button asChild className="btn-gradient">
+              <Link href="/testimonials">Read Our Stories</Link>
+            </Button>
+          </div>
+          <div className="relative h-80 w-full overflow-hidden rounded-lg shadow-xl">
+            <Image
+              src="https://plus.unsplash.com/premium_photo-1664189122502-c698839fc650?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fHJlc3R1cmFudHxlbnwwfHwwfHx8MA%3D%3D"
+              alt="Chef plating a dish"
+              data-ai-hint="chef plating food"
+              fill
+              className="object-cover"
+            />
+          </div>
+        </div>
+      </section>
       <GallerySection />
 
       <section className="py-12 sm:py-16 md:py-20">
