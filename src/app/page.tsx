@@ -20,6 +20,8 @@ import { GallerySection } from '@/components/gallery-section';
 import { PopularItemsSection } from '@/components/popular-items-section';
 import { OffersSection } from '@/components/offers-section';
 import { DiscountSection } from '@/components/discount-section';
+import { TestimonialsSection } from '@/components/testimonials-section';
+import { FAQSection } from '@/components/faq-section';
 
 
 
@@ -132,6 +134,10 @@ export default function HomePage() {
       </section>
 
       <OffersSection />
+
+      <TestimonialsSection />
+
+      <FAQSection />
 
       <DiscountSection />
     </div>

@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import cloudinary from '@/lib/cloudinary';
 
 export async function POST(request: NextRequest) {
   try {
     // Check Cloudinary configuration first
     const cloudName = process.env.CLOUDINARY_CLOUD_NAME || process.env.CLOUDINARY_NAME || process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
-    const apiKey = process.env.CLOUDINARY_API_KEY || process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY;
-    const apiSecret = process.env.CLOUDINARY_API_SECRET || process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET;
+    const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET || 'lakhna_restaurant';
 
-    if (!cloudName || !apiKey || !apiSecret) {
-      console.error('Missing Cloudinary environment variables');
+    if (!cloudName) {
+      console.error('Missing Cloudinary cloud name');
       return NextResponse.json(
         { error: 'Cloudinary configuration is incomplete. Please check your environment variables.' },
         { status: 500 }
@@ -43,50 +41,36 @@ export async function POST(request: NextRequest) {
       fileSize: file.size
     });
 
-    // Convert file to buffer
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+    // Create form data for Cloudinary upload
+    const cloudinaryFormData = new FormData();
+    cloudinaryFormData.append('file', file);
+    cloudinaryFormData.append('upload_preset', uploadPreset);
+    cloudinaryFormData.append('folder', folder);
+    cloudinaryFormData.append('transformation', 'w_1200,h_800,c_limit,q_auto:good,f_auto');
 
-    // Convert buffer to base64 for more reliable upload
-    const base64String = buffer.toString('base64');
-    const dataURI = `data:${file.type};base64,${base64String}`;
-
-    // Upload to Cloudinary with timeout and better error handling
-    const result = await new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        reject(new Error('Upload timeout - request took too long'));
-      }, 60000); // 60 second timeout
-
-      cloudinary.uploader.upload(
-        dataURI,
-        {
-          folder: folder,
-          resource_type: 'auto',
-          transformation: [
-            { width: 1200, height: 800, crop: 'limit' },
-            { quality: 'auto:good' },
-            { fetch_format: 'auto' }
-          ],
-          timeout: 60000
-        },
-        (error, result) => {
-          clearTimeout(timeout);
-          if (error) {
-            console.error('Cloudinary upload error:', error);
-            reject(error);
-          } else {
-            console.log('Cloudinary upload success:', result);
-            resolve(result);
-          }
-        }
-      );
+    // Upload to Cloudinary using fetch
+    const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+      method: 'POST',
+      body: cloudinaryFormData,
     });
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Cloudinary upload error:', errorText);
+      return NextResponse.json(
+        { error: `Cloudinary upload failed: ${errorText}` },
+        { status: 500 }
+      );
+    }
+
+    const result = await response.json();
+    console.log('Cloudinary upload success:', result);
+
     return NextResponse.json({
-      url: (result as any).secure_url,
-      publicId: (result as any).public_id,
-      width: (result as any).width,
-      height: (result as any).height,
+      url: result.secure_url,
+      publicId: result.public_id,
+      width: result.width,
+      height: result.height,
     });
 
   } catch (error) {

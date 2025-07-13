@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Utensils, Home, Package, Star, Tag, Users, Calendar, Settings } from 'lucide-react';
+import { Utensils, Home, Package, Star, Tag, Users, Calendar, Settings, MessageSquare } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -63,6 +63,13 @@ export default function DashboardLayout({
               >
                 <Calendar className="h-4 w-4" />
                 Reservations
+              </Link>
+              <Link
+                href="/dashboard/testimonials"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+              >
+                <MessageSquare className="h-4 w-4" />
+                Testimonials
               </Link>
               <Link
                 href="/dashboard/settings"
@@ -155,6 +162,13 @@ export default function DashboardLayout({
                     >
                       <Calendar className="h-4 w-4" />
                       Reservations
+                    </Link>
+                    <Link
+                      href="/dashboard/testimonials"
+                      className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                    >
+                      <MessageSquare className="h-4 w-4" />
+                      Testimonials
                     </Link>
                     <Link
                       href="/dashboard/settings"
