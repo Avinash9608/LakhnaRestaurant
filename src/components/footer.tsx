@@ -73,7 +73,7 @@ export function Footer() {
                     href="mailto:contact@gastronomicgateway.com"
                     className="text-muted-foreground transition hover:text-primary"
                   >
-                    lakhnarestrudent@gmail.com
+                    redchill@gmail.com
                   </a>
                 </li>
                 <li>
