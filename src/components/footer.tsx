@@ -1,11 +1,11 @@
-import Link from 'next/link';
-import { UtensilsCrossed, Facebook, Twitter, Instagram } from 'lucide-react';
+import Link from "next/link";
+import { UtensilsCrossed, Facebook, Twitter, Instagram } from "lucide-react";
 
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/menu', label: 'Menu' },
-  { href: '/reservations', label: 'Reservations' },
-  { href: '/testimonials', label: 'Testimonials' },
+  { href: "/", label: "Home" },
+  { href: "/menu", label: "Menu" },
+  { href: "/reservations", label: "Reservations" },
+  { href: "/testimonials", label: "Testimonials" },
 ];
 
 export function Footer() {
@@ -53,7 +53,7 @@ export function Footer() {
             <div>
               <p className="font-headline font-medium">Navigate</p>
               <ul className="mt-4 space-y-2 text-sm">
-                {navLinks.map(link => (
+                {navLinks.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
@@ -73,7 +73,7 @@ export function Footer() {
                     href="mailto:contact@gastronomicgateway.com"
                     className="text-muted-foreground transition hover:text-primary"
                   >
-                    contact@gastronomicgateway.com
+                    lakhnarestrudent@gmail.com
                   </a>
                 </li>
                 <li>
